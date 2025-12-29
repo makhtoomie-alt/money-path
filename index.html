@@ -3,177 +3,180 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoneyPath </title>
+<title>MoneyPath | Smart Saving</title>
+
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
-body {
-    font-family: 'Vazir', sans-serif;
-    margin: 0;
-    background: linear-gradient(120deg, #e0f7e9, #ffffff);
-    color: #333;
+body{
+    font-family:'Vazir',sans-serif;
+    margin:0;
+    background:linear-gradient(135deg,#e8f5e9,#ffffff);
 }
-header {
-    background-color: #4caf50;
-    padding: 25px 20px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+header{
+    background:#2e7d32;
+    color:white;
+    padding:25px;
+    text-align:center;
 }
-.container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 10px;
+.container{
+    max-width:600px;
+    margin:20px auto;
+    padding:10px;
 }
-.card {
-    background-color: white;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px 0;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
+.card{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
 }
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+h2{color:#2e7d32;margin-top:0}
+input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border-radius:12px;
+    border:1px solid #ccc;
+    font-size:16px;
 }
-button {
-    background: linear-gradient(90deg, #4caf50, #81c784);
-    color: white;
-    padding: 14px 22px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    margin-top: 15px;
-    width: 100%;
-    transition: background 0.3s;
+button{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(90deg,#43a047,#66bb6a);
+    color:white;
+    cursor:pointer;
 }
-button:hover {
-    background: linear-gradient(90deg, #43a047, #66bb6a);
+.result{margin-top:15px;line-height:1.8}
+.progress{
+    height:14px;
+    background:#ddd;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:10px;
 }
-input[type=number], input[type=text] {
-    width: 100%;
-    padding: 12px;
-    margin: 12px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#4caf50,#81c784);
+    transition:.6s;
 }
-h2 {
-    margin-top: 0;
-    color: #2e7d32;
+.history{
+    font-size:14px;
+    margin-top:15px;
+    color:#444;
 }
-footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-    color: #555;
-}
-canvas {
-    margin-top: 15px;
-    border-radius: 10px;
-}
-.language-btn {
-    margin-top: 10px;
-    background-color: #388e3c;
-}
-@media (max-width: 640px) {
-    .container { padding: 5px; }
-    .card { padding: 15px; }
-    button { padding: 12px; font-size: 16px; }
+footer{
+    text-align:center;
+    padding:20px;
+    font-size:14px;
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
+
 <header>
-    <h1 id="title">MoneyPath حرفه‌ای</h1>
-    <p id="subtitle">مسیر مالی شما را ساده و جذاب می‌کند</p>
-    <button class="language-btn" onclick="toggleLanguage()">English / فارسی</button>
+    <h1>MoneyPath</h1>
+    <p>مدیریت هوشمند پس‌انداز</p>
 </header>
+
 <div class="container">
-    <div class="card">
-        <h2 id="goalTitle">هدف</h2>
-        <input type="text" id="goal" placeholder="هدف خود را وارد کنید">
-    </div>
-    <div class="card">
-        <h2 id="savingTitle">پس‌انداز ماهانه</h2>
-        <input type="number" id="saving" placeholder="مقدار پس‌انداز ماهانه">
-    </div>
-    <div class="card">
-        <h2 id="calcTitle">محاسبه پس‌انداز</h2>
-        <button onclick="calculate()" id="calcBtn">محاسبه</button>
-        <p id="result">مقدار پس‌انداز شما اینجا نمایش داده می‌شود</p>
-        <canvas id="chart" width="400" height="200"></canvas>
-    </div>
+
+<div class="card">
+<h2>هدف مالی</h2>
+<input id="goalName" placeholder="مثلاً خرید لپ‌تاپ">
+<input id="goalAmount" type="number" placeholder="مبلغ هدف (تومان)">
 </div>
-<footer>
-    <p>نسخه رایگان و حرفه‌ای موجود است | لینک اینستاگرام در بیو</p>
-</footer>
+
+<div class="card">
+<h2>پس‌انداز ماهانه</h2>
+<input id="monthlySaving" type="number" placeholder="مبلغ پس‌انداز ماهانه">
+</div>
+
+<div class="card">
+<h2>وضعیت پیشرفت</h2>
+<button onclick="calculate()">محاسبه</button>
+
+<div class="result" id="result"></div>
+<div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+
+<canvas id="chart" height="200"></canvas>
+
+<div class="history" id="history"></div>
+</div>
+
+</div>
+
+<footer>MoneyPath © 2025</footer>
+
 <script>
-var lang = 'fa';
-function toggleLanguage() {
-    if(lang === 'fa') {
-        lang = 'en';
-        document.getElementById('title').textContent = 'MoneyPath Pro';
-        document.getElementById('subtitle').textContent = 'Manage your finances easily';
-        document.getElementById('goalTitle').textContent = 'Goal';
-        document.getElementById('goal').placeholder = 'Enter your goal';
-        document.getElementById('savingTitle').textContent = 'Monthly Saving';
-        document.getElementById('saving').placeholder = 'Enter monthly saving';
-        document.getElementById('calcTitle').textContent = 'Calculate Saving';
-        document.getElementById('calcBtn').textContent = 'Calculate';
-        document.getElementById('result').textContent = 'Your saving amount will appear here';
-    } else {
-        lang = 'fa';
-        document.getElementById('title').textContent = 'MoneyPath حرفه‌ای';
-        document.getElementById('subtitle').textContent = 'مسیر مالی شما را ساده و جذاب می‌کند';
-        document.getElementById('goalTitle').textContent = 'هدف';
-        document.getElementById('goal').placeholder = 'هدف خود را وارد کنید';
-        document.getElementById('savingTitle').textContent = 'پس‌انداز ماهانه';
-        document.getElementById('saving').placeholder = 'مقدار پس‌انداز ماهانه';
-        document.getElementById('calcTitle').textContent = 'محاسبه پس‌انداز';
-        document.getElementById('calcBtn').textContent = 'محاسبه';
-        document.getElementById('result').textContent = 'مقدار پس‌انداز شما اینجا نمایش داده می‌شود';
-    }
-}
-var ctx = document.getElementById('chart').getContext('2d');
-var chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Month 1','Month 2','Month 3','Month 4','Month 5','Month 6','Month 7','Month 8','Month 9','Month 10','Month 11','Month 12'],
-        datasets: [{
-            label: 'Monthly Saving',
-            data: Array(12).fill(0),
-            backgroundColor: '#4caf50'
+const ctx=document.getElementById('chart').getContext('2d');
+const chart=new Chart(ctx,{
+    type:'line',
+    data:{
+        labels:Array.from({length:12},(_,i)=>`Month ${i+1}`),
+        datasets:[{
+            data:Array(12).fill(0),
+            borderColor:'#4caf50',
+            backgroundColor:'rgba(76,175,80,0.2)',
+            fill:true,
+            tension:.4
         }]
     },
-    options: {
-        responsive: true,
-        animation: {
-            duration: 1200,
-            easing: 'easeOutQuart'
-        },
-        plugins: {
-            legend: { labels: { font: { size: 14 } } }
-        },
-        scales: { y: { beginAtZero: true } }
-    }
+    options:{responsive:true,scales:{y:{beginAtZero:true}}}
 });
-function calculate() {
-    var saving = parseFloat(document.getElementById('saving').value);
-    var result = document.getElementById('result');
-    if(isNaN(saving) || saving <= 0) {
-        result.textContent = lang==='fa' ? 'لطفاً یک مقدار معتبر وارد کنید' : 'Please enter a valid amount';
-        chart.data.datasets[0].data = Array(12).fill(0);
-        chart.update();
+
+function calculate(){
+    const goal=+goalAmount.value;
+    const monthly=+monthlySaving.value;
+
+    if(!goal||!monthly){
+        result.textContent='لطفاً همه مقادیر را وارد کنید';
         return;
     }
-    var total = saving * 12;
-    result.textContent = lang==='fa' ? 'پس‌انداز سالانه شما: ' + total.toLocaleString() + ' تومان' : 'Your annual saving: ' + total.toLocaleString();
-    chart.data.datasets[0].data = Array(12).fill(saving);
+
+    const yearly=monthly*12;
+    const percent=Math.min((yearly/goal)*100,100);
+    const remain=Math.max(goal-yearly,0);
+
+    result.innerHTML=`
+    💰 پس‌انداز سالانه: <b>${yearly.toLocaleString()}</b> تومان<br>
+    🎯 پیشرفت هدف: <b>${percent.toFixed(1)}%</b><br>
+    ⏳ باقی‌مانده: <b>${remain.toLocaleString()}</b> تومان
+    `;
+
+    progressBar.style.width=percent+'%';
+
+    chart.data.datasets[0].data=Array(12).fill(monthly);
     chart.update();
+
+    saveData();
 }
+
+function saveData(){
+    const data={
+        goalName:goalName.value,
+        goalAmount:goalAmount.value,
+        monthlySaving:monthlySaving.value
+    };
+    localStorage.setItem('moneypath',JSON.stringify(data));
+    history.textContent='💾 اطلاعات ذخیره شد';
+}
+
+function loadData(){
+    const data=JSON.parse(localStorage.getItem('moneypath'));
+    if(!data)return;
+    goalName.value=data.goalName;
+    goalAmount.value=data.goalAmount;
+    monthlySaving.value=data.monthlySaving;
+}
+loadData();
 </script>
+
 </body>
 </html>
