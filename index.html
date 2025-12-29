@@ -1,34 +1,179 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>MoneyPath</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyPath </title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+body {
+    font-family: 'Vazir', sans-serif;
+    margin: 0;
+    background: linear-gradient(120deg, #e0f7e9, #ffffff);
+    color: #333;
+}
+header {
+    background-color: #4caf50;
+    padding: 25px 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+}
+.card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+button {
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    color: white;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 15px;
+    width: 100%;
+    transition: background 0.3s;
+}
+button:hover {
+    background: linear-gradient(90deg, #43a047, #66bb6a);
+}
+input[type=number], input[type=text] {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+h2 {
+    margin-top: 0;
+    color: #2e7d32;
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #555;
+}
+canvas {
+    margin-top: 15px;
+    border-radius: 10px;
+}
+.language-btn {
+    margin-top: 10px;
+    background-color: #388e3c;
+}
+@media (max-width: 640px) {
+    .container { padding: 5px; }
+    .card { padding: 15px; }
+    button { padding: 12px; font-size: 16px; }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
+<header>
+    <h1 id="title">MoneyPath حرفه‌ای</h1>
+    <p id="subtitle">مسیر مالی شما را ساده و جذاب می‌کند</p>
+    <button class="language-btn" onclick="toggleLanguage()">English / فارسی</button>
+</header>
 <div class="container">
-  <h1>محاسبه مسیر مالی</h1>
-
-  <input id="income" type="number" placeholder="درآمد ماهانه">
-  <input id="cost" type="number" placeholder="هزینه ماهانه">
-
-  <div style="background:#f9f9f9; padding:10px; border-radius:5px; margin-bottom:10px;">
-    <b>نسخه پولی:</b> اهداف نامحدود، نمودار حرفه‌ای، پیام انگیزشی! <br>
-    با دکمه "پرداخت نسخه پولی" فعال کنید.
-  </div>
-
-  <h2>اهداف مالی</h2>
-  <div id="goals-container"></div>
-  <button onclick="addGoal()">افزودن هدف جدید</button>
-  <button onclick="activatePaid()">فعالسازی نسخه پولی</button>
-  <button onclick="pay()">پرداخت نسخه پولی</button>
-
-  <button onclick="calc()">محاسبه</button>
-
-  <pre id="result"></pre>
+    <div class="card">
+        <h2 id="goalTitle">هدف</h2>
+        <input type="text" id="goal" placeholder="هدف خود را وارد کنید">
+    </div>
+    <div class="card">
+        <h2 id="savingTitle">پس‌انداز ماهانه</h2>
+        <input type="number" id="saving" placeholder="مقدار پس‌انداز ماهانه">
+    </div>
+    <div class="card">
+        <h2 id="calcTitle">محاسبه پس‌انداز</h2>
+        <button onclick="calculate()" id="calcBtn">محاسبه</button>
+        <p id="result">مقدار پس‌انداز شما اینجا نمایش داده می‌شود</p>
+        <canvas id="chart" width="400" height="200"></canvas>
+    </div>
 </div>
-
-<script src="script.js"></script>
+<footer>
+    <p>نسخه رایگان و حرفه‌ای موجود است | لینک اینستاگرام در بیو</p>
+</footer>
+<script>
+var lang = 'fa';
+function toggleLanguage() {
+    if(lang === 'fa') {
+        lang = 'en';
+        document.getElementById('title').textContent = 'MoneyPath Pro';
+        document.getElementById('subtitle').textContent = 'Manage your finances easily';
+        document.getElementById('goalTitle').textContent = 'Goal';
+        document.getElementById('goal').placeholder = 'Enter your goal';
+        document.getElementById('savingTitle').textContent = 'Monthly Saving';
+        document.getElementById('saving').placeholder = 'Enter monthly saving';
+        document.getElementById('calcTitle').textContent = 'Calculate Saving';
+        document.getElementById('calcBtn').textContent = 'Calculate';
+        document.getElementById('result').textContent = 'Your saving amount will appear here';
+    } else {
+        lang = 'fa';
+        document.getElementById('title').textContent = 'MoneyPath حرفه‌ای';
+        document.getElementById('subtitle').textContent = 'مسیر مالی شما را ساده و جذاب می‌کند';
+        document.getElementById('goalTitle').textContent = 'هدف';
+        document.getElementById('goal').placeholder = 'هدف خود را وارد کنید';
+        document.getElementById('savingTitle').textContent = 'پس‌انداز ماهانه';
+        document.getElementById('saving').placeholder = 'مقدار پس‌انداز ماهانه';
+        document.getElementById('calcTitle').textContent = 'محاسبه پس‌انداز';
+        document.getElementById('calcBtn').textContent = 'محاسبه';
+        document.getElementById('result').textContent = 'مقدار پس‌انداز شما اینجا نمایش داده می‌شود';
+    }
+}
+var ctx = document.getElementById('chart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Month 1','Month 2','Month 3','Month 4','Month 5','Month 6','Month 7','Month 8','Month 9','Month 10','Month 11','Month 12'],
+        datasets: [{
+            label: 'Monthly Saving',
+            data: Array(12).fill(0),
+            backgroundColor: '#4caf50'
+        }]
+    },
+    options: {
+        responsive: true,
+        animation: {
+            duration: 1200,
+            easing: 'easeOutQuart'
+        },
+        plugins: {
+            legend: { labels: { font: { size: 14 } } }
+        },
+        scales: { y: { beginAtZero: true } }
+    }
+});
+function calculate() {
+    var saving = parseFloat(document.getElementById('saving').value);
+    var result = document.getElementById('result');
+    if(isNaN(saving) || saving <= 0) {
+        result.textContent = lang==='fa' ? 'لطفاً یک مقدار معتبر وارد کنید' : 'Please enter a valid amount';
+        chart.data.datasets[0].data = Array(12).fill(0);
+        chart.update();
+        return;
+    }
+    var total = saving * 12;
+    result.textContent = lang==='fa' ? 'پس‌انداز سالانه شما: ' + total.toLocaleString() + ' تومان' : 'Your annual saving: ' + total.toLocaleString();
+    chart.data.datasets[0].data = Array(12).fill(saving);
+    chart.update();
+}
+</script>
 </body>
 </html>
