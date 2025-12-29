@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>MoneyPath</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>محاسبه مسیر مالی</h1>
+
+  <input id="income" type="number" placeholder="درآمد ماهانه">
+  <input id="cost" type="number" placeholder="هزینه ماهانه">
+
+  <div style="background:#f9f9f9; padding:10px; border-radius:5px; margin-bottom:10px;">
+    <b>نسخه پولی:</b> اهداف نامحدود، نمودار حرفه‌ای، پیام انگیزشی! <br>
+    با دکمه "پرداخت نسخه پولی" فعال کنید.
+  </div>
+
+  <h2>اهداف مالی</h2>
+  <div id="goals-container"></div>
+  <button onclick="addGoal()">افزودن هدف جدید</button>
+  <button onclick="activatePaid()">فعالسازی نسخه پولی</button>
+  <button onclick="pay()">پرداخت نسخه پولی</button>
+
+  <button onclick="calc()">محاسبه</button>
+
+  <pre id="result"></pre>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
